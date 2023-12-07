@@ -24,7 +24,7 @@ const HomePage = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView]);
 
-  if (isLoading) return <span>Loading...</span>;
+  if (isLoading) return <Loader />;
   if (error instanceof Error) return <>{toast.error(error.message)}</>;
 
   return (

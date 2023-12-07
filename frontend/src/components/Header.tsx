@@ -12,7 +12,7 @@ import Logo from "../assets/logo.png";
 import jwt_decode from "jwt-decode";
 import { useCartStore } from "../store/cart";
 import { useSearchStore } from "../store/search";
-import SearchIcon from "./SearchIcon";
+import { SearchIcon } from "./icons";
 import { Token } from "../Interfaces";
 
 const Header = () => {

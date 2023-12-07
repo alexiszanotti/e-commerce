@@ -7,7 +7,7 @@ const Layout = () => {
     <div>
       <Toaster />
       <Header />
-      <div className=' h-[calc(100vh-64px)] bg-white dark:bg-gray-900'>
+      <div className=' min-h-semi-full bg-white dark:bg-gray-900'>
         <Outlet />
       </div>
     </div>

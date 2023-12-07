@@ -13,12 +13,19 @@ def get_products(request):
     pagination = CustomPagination()
     paginated_products = pagination.paginate_queryset(products, request)
     serializer = ProductSerializer(paginated_products, many=True)
-    return pagination.get_paginted_response(serializer.data)
+    return pagination.get_paginated_response(serializer.data)
 
 
 @api_view(['GET'])
-def get_product(request, name):
-    products = Product.objects.get(name=name)
+def get_product(request, slug):
+    products = Product.objects.get(slug=slug)
+    serializer = ProductSerializer(products, many=False)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+def get_product_admin(request, id):
+    products = Product.objects.get(id=id)
     serializer = ProductSerializer(products, many=False)
     return Response(serializer.data)
 

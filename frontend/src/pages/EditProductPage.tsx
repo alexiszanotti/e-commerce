@@ -1,12 +1,12 @@
-import React, { useRef, useState, ChangeEvent } from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { createProductApi } from "../api/products";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useRef, useState, useEffect, ChangeEvent } from "react";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { editProductApi, getProductByIdApi } from "../api/products";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-hot-toast";
 import Loader from "../components/Loader";
-import { CloseIcon, UploadIcon } from "../components/icons";
+import { CloseIcon, PlusIcon, UploadIcon } from "../components/icons";
 
-const AddProductPage = () => {
+const EditProductPage = () => {
   const [name, setName] = useState<string>("");
   const [countInStock, setCountInStock] = useState<number>(0);
   const [category, setCategory] = useState<string>("");
@@ -17,14 +17,15 @@ const AddProductPage = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isHovered, setIsHovered] = useState(false);
 
+  const { id } = useParams();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
 
-  const addProdMutation = useMutation({
-    mutationFn: createProductApi,
+  const editProdMutation = useMutation({
+    mutationFn: editProductApi,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
-      toast.success("Product created!");
+      toast.success("Save product");
       navigate("/admin");
     },
     onError: error => {
@@ -34,15 +35,32 @@ const AddProductPage = () => {
     },
   });
 
+  const { data } = useQuery({
+    queryKey: ["product", id],
+    queryFn: () => getProductByIdApi(Number(id)),
+  });
+
+  useEffect(() => {
+    if (data) {
+      setName(data.name);
+      setCountInStock(data.count_in_stock);
+      setCategory(data.category);
+      setDescription(data.description);
+      setPrice(data.price);
+      setImage(data.image);
+    }
+  }, [data]);
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    addProdMutation.mutate({
+    editProdMutation.mutate({
       name: name,
       count_in_stock: countInStock,
       category: category,
       description: description,
       price: price,
       image: image,
+      id: Number(id),
     });
   };
 
@@ -95,14 +113,14 @@ const AddProductPage = () => {
     setIsHovered(false);
   };
 
-  if (addProdMutation.isLoading) return <Loader />;
+  if (editProdMutation.isLoading) return <Loader />;
   return (
     <div className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-60 '>
       <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[700px] w-[600px] rounded-md'>
         <div className='relative p-4 w-full max-w-2xl h-full md:h-auto'>
           <div className='relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5'>
             <div className='flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600'>
-              <h3 className='text-lg font-semibold text-gray-900 dark:text-white'>Add Product</h3>
+              <h3 className='text-lg font-semibold text-gray-900 dark:text-white'>Edit Product</h3>
               <Link
                 to='/admin'
                 className='text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white'
@@ -238,22 +256,13 @@ const AddProductPage = () => {
                           className='text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center dark:hover:bg-gray-600 dark:hover:text-white'
                           data-modal-toggle='defaultModal'
                         >
-                          <svg
-                            aria-hidden='true'
-                            className='w-5 h-5'
-                            fill='currentColor'
-                            viewBox='0 0 20 20'
-                            xmlns='http://www.w3.org/2000/svg'
-                          >
-                            <path
-                              fillRule='evenodd'
-                              d='M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z'
-                              clipRule='evenodd'
-                            ></path>
-                          </svg>
-                          <span className='sr-only'>Close modal</span>
+                          <CloseIcon />
                         </button>
-                        <img className='h-48 w-96' src={filePreview} alt='Imagen seleccionada' />
+                        <img
+                          className='h-48 w-96'
+                          src={filePreview || `${import.meta.env.VITE_BACKEND_URL}${data.image}`}
+                          alt={data.name}
+                        />
                       </div>
                     )}
                   </div>
@@ -263,19 +272,8 @@ const AddProductPage = () => {
                 type='submit'
                 className='text-white inline-flex items-center bg-primary-700 hover:bg-primary-800 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800'
               >
-                <svg
-                  className='mr-1 -ml-1 w-6 h-6'
-                  fill='currentColor'
-                  viewBox='0 0 20 20'
-                  xmlns='http://www.w3.org/2000/svg'
-                >
-                  <path
-                    fillRule='evenodd'
-                    d='M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z'
-                    clipRule='evenodd'
-                  ></path>
-                </svg>
-                Add new product
+                <PlusIcon />
+                Save product
               </button>
             </form>
           </div>
@@ -284,4 +282,4 @@ const AddProductPage = () => {
     </div>
   );
 };
-export default AddProductPage;
+export default EditProductPage;

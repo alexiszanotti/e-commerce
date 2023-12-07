@@ -1,8 +1,11 @@
 import { useState } from "react";
+import { Link } from "react-router-dom";
+import { AiFillPlusCircle } from "react-icons/ai";
+
 import Users from "../components/Users";
 import Orders from "../components/Orders";
 import Products from "../components/Products";
-import SearchIcon from "../components/SearchIcon";
+import { SearchIcon } from "../components/icons";
 
 const AdminPage = () => {
   const [show, setShow] = useState(0);
@@ -28,6 +31,15 @@ const AdminPage = () => {
                     placeholder='Search'
                   />
                 </div>
+                {show === 0 && (
+                  <Link
+                    className='flex text-sm px-4 py-2 rounded-md  ml-4 w-56 items-center hover:bg-gray-700'
+                    to='new'
+                  >
+                    <AiFillPlusCircle size={24} className=' text-gray-400 cursor-pointer' />
+                    <span className='mx-3 text-gray-400 font-bold'>Add product</span>
+                  </Link>
+                )}
               </form>
             </div>
             <div className='w-full md:w-auto flex flex-col md:flex-row space-y-2 md:space-y-0 items-stretch md:items-center justify-end md:space-x-3 flex-shrink-0'>
