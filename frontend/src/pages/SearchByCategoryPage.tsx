@@ -1,0 +1,81 @@
+import { useParams } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { useQuery } from "@tanstack/react-query";
+import { getProductsByCategoryApi } from "../api/products";
+import Loader from "../components/Loader";
+import { toast } from "react-hot-toast";
+import { Product } from "../Interfaces";
+import Rating from "../components/Rating";
+import { useCartStore } from "../store/cart";
+import { ArrowRightIcon, PlusIcon } from "../components/icons";
+
+const SearchByCategory = () => {
+  const { category } = useParams();
+  const addToCart = useCartStore(state => state.addToCart);
+
+  const { data, isError, isLoading } = useQuery({
+    queryKey: ["products", category],
+    queryFn: () => getProductsByCategoryApi(category || ""),
+  });
+
+  if (isError) return toast.error("Error!");
+  if (isLoading) return <Loader />;
+
+  return (
+    <div className='flex justify-center'>
+      <div className='p-8 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-16'>
+        {data &&
+          data.map((product: Product) => (
+            <div className='max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700'>
+              <Link to={`/product/${product.slug}`}>
+                <img
+                  className='rounded-t-lg'
+                  src={`${import.meta.env.VITE_BACKEND_URL}${product.image}`}
+                  alt=''
+                />
+              </Link>
+              <div className='p-5 '>
+                <h5 className='mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>
+                  {product.name}
+                </h5>
+                <div className='flex justify-between'>
+                  <h5 className='mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-slate-200'>
+                    $ {product.price}
+                  </h5>
+                  <div className='flex items-center'>
+                    <span className='ml-1 text-gray-500 dark:text-gray-400'>
+                      {product.rating === null && <Rating value={product.rating} />}
+                    </span>
+                  </div>
+                </div>
+                <p className='mb-3 font-normal text-gray-700 dark:text-gray-400'>
+                  {product.description}
+                </p>
+
+                <button
+                  onClick={() => addToCart(product)}
+                  className='inline-flex items-center mx-3 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+                >
+                  Add to Cart
+                  <PlusIcon />
+                </button>
+
+                <Link
+                  to={`/product/${product.slug}`}
+                  className='inline-flex items-center mx-3
+        px-3 py-2 text-sm font-medium text-center text-white 
+        bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 
+        focus:outline-none focus:ring-blue-300 dark:bg-blue-600 
+        dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+                >
+                  View
+                  <ArrowRightIcon />
+                </Link>
+              </div>
+            </div>
+          ))}
+      </div>
+    </div>
+  );
+};
+export default SearchByCategory;

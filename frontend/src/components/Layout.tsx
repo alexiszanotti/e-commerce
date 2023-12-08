@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import Header from "./Header";
 import { useSearchStore } from "../store/search";
-import SearchResults from "../pages/SearchResults";
+import SearchResults from "../pages/SearchResultsPage";
 import useDebounce from "../hooks/useDeounce";
 
 const Layout = () => {

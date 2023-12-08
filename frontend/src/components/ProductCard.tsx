@@ -1,7 +1,8 @@
 import { Link } from "react-router-dom";
 import { Product } from "../Interfaces";
-import { ArrowRightIcon, StarsRaitingIcon } from "./icons";
+import { ArrowRightIcon } from "./icons";
 import { useCartStore } from "../store/cart";
+import Rating from "./Rating";
 
 interface Props {
   product: Product;
@@ -30,13 +31,8 @@ const ProductCard = ({ product }: Props) => {
                 $ {product.price}
               </h5>
               <div className='flex items-center'>
-                <StarsRaitingIcon />
-                <StarsRaitingIcon />
-                <StarsRaitingIcon />
-                <StarsRaitingIcon />
-                <StarsRaitingIcon />
                 <span className='ml-1 text-gray-500 dark:text-gray-400'>
-                  {product.rating === null ? "0.0" : product.rating}
+                  {product.rating === null && <Rating value={product.rating} />}
                 </span>
               </div>
             </div>
