@@ -20,6 +20,11 @@ export const getProductBySlugApi = async (slug: string) => {
   return data;
 };
 
+export const searchProductApi = async (query: string) => {
+  const { data } = await authAxios(`/products/search/?query=${query}`);
+  return data;
+};
+
 export const createProductApi = async (data: Product) => {
   const formData = new FormData();
 

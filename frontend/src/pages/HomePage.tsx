@@ -32,7 +32,7 @@ const HomePage = () => {
       {data?.pages.map((page: any) => (
         <div key={page.meta.next}>
           <div className='flex justify-center'>
-            <div className='p-8 grid grid-cols-1 md:grid-cols-3 lg:grid-cols-3 gap-16'>
+            <div className='p-8 grid grid-cols-1 md:grid-cols-2 sm:grid-cols-1 lg:grid-cols-3 gap-16'>
               {page.data?.map((product: Product) => (
                 <ProductCard key={product.id} product={product} />
               ))}

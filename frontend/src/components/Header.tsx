@@ -17,15 +17,15 @@ import { Token } from "../Interfaces";
 
 const Header = () => {
   const { toggleDarkMode, darkMode } = useDarkMode();
+
   const { isAuth } = useAuthStore();
+  const cart = useCartStore(({ cart }) => cart);
+
+  const { searchTerm, setSearchTerm } = useSearchStore(state => state);
 
   const navigate = useNavigate();
 
   const token: string = useAuthStore.getState().access;
-  const cart = useCartStore(state => state.cart);
-
-  const searchTerm = useSearchStore(state => state.searchTerm);
-  const setSearchTerm = useSearchStore(state => state.setSearchTerm);
 
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchTerm(event.target.value);
