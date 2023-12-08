@@ -6,6 +6,7 @@ import RegisterPage from "./pages/RegisterPage";
 import AdminPage from "./pages/AdminPage";
 import AddProductPage from "./pages/AddProductPage";
 import EditProductPage from "./pages/EditProductPage";
+import DetailProduct from "./pages/DetailProduct";
 import { PrivateRoutes, AdminPrivateRoutes } from "./components/PrivateRoutes";
 
 function App() {
@@ -16,6 +17,7 @@ function App() {
           <Route index element={<HomePage />} />
           <Route path='login' element={<LoginPage />} />
           <Route path='register' element={<RegisterPage />} />
+          <Route path='product/:slug' element={<DetailProduct />} />
 
           <Route element={<PrivateRoutes />}></Route>
           <Route path='admin' element={<AdminPrivateRoutes />}>

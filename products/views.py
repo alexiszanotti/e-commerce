@@ -1,6 +1,7 @@
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
 from rest_framework import status
+from django.utils.text import slugify
 
 from . models import Product
 from . serializers import ProductSerializer
@@ -35,7 +36,13 @@ def create_product(request):
     if request.user.is_staff:
         serializer = ProductSerializer(data=request.data)
         if serializer.is_valid():
-            serializer.save(user=request.user)
+            name = serializer.validated_data['name']
+            category = serializer.validated_data['category']
+            slugFinal = name + "-" + category
+            slug = slugify(slugFinal)
+            if (serializer.Meta.model.objects.filter(slug=slug).exists()):
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            serializer.save(user=request.user, slug=slug)
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
@@ -48,7 +55,13 @@ def edit_product(request, pk):
     if request.user.is_staff:
         serializer = ProductSerializer(product, data=request.data)
         if serializer.is_valid():
-            serializer.save()
+            name = serializer.validated_data['name']
+            category = serializer.validated_data['category']
+            slugFinal = name + category
+            slug = slugify(slugFinal)
+            if serializer.Meta.model.objects.filter(slug=slug).exists():
+                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            serializer.save(user=request.user, slug=slug)
             return Response(serializer.data, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:

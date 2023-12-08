@@ -15,6 +15,11 @@ export const getProductByIdApi = async (id: number) => {
   return data;
 };
 
+export const getProductBySlugApi = async (slug: string) => {
+  const { data } = await authAxios(`/products/get/${slug}/`);
+  return data;
+};
+
 export const createProductApi = async (data: Product) => {
   const formData = new FormData();
 

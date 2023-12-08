@@ -36,7 +36,7 @@ const EditProductPage = () => {
   });
 
   const { data } = useQuery({
-    queryKey: ["product", id],
+    queryKey: ["products", id],
     queryFn: () => getProductByIdApi(Number(id)),
   });
 
