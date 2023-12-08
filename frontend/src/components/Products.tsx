@@ -1,25 +1,27 @@
 import { useEffect } from "react";
-import { BsFillTrashFill } from "react-icons/bs";
-import { AiFillEdit } from "react-icons/ai";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { deleteProductApi, getProductsApi } from "../api/products";
 import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import Loader from "./Loader";
 import { useInView } from "react-intersection-observer";
 import { Product } from "../Interfaces";
+import TableBodyProducts from "./TableBodyProducts";
 
-const Products = () => {
+type Props = {
+  products: any;
+};
+
+const Products = ({ products }: Props) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const { ref, inView } = useInView();
+  const { inView } = useInView();
 
-  const { data, isLoading, error, isFetchingNextPage, fetchNextPage, hasNextPage } =
-    useInfiniteQuery(["products"], getProductsApi, {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      getNextPageParam: (page: any) => page.meta.next,
-    });
+  const { data, isLoading, error, fetchNextPage } = useInfiniteQuery(["products"], getProductsApi, {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    getNextPageParam: (page: any) => page.meta.next,
+  });
 
   useEffect(() => {
     if (inView) {
@@ -73,33 +75,27 @@ const Products = () => {
           </tr>
         </thead>
 
-        {data?.pages.map((page: any) => (
-          <tbody key={page}>
-            {page.data?.map(({ id, name, price, count_in_stock }: Product) => (
-              <tr key={id} className='border-b dark:border-gray-700'>
-                <td className='px-4 py-3'>{id}</td>
-                <td className='px-4 py-3'>{name || "-"}</td>
-                <td className='px-4 py-3'> {price ? `$ ${price}` : "-"}</td>
-                <td className='px-4 py-3'>{count_in_stock}</td>
-                <td className='px-4 py-3'>
-                  <div className='flex justify-center gap-4'>
-                    <BsFillTrashFill
-                      onClick={() => {
-                        if (id) handleDelete(id);
-                      }}
-                      size={22}
-                      className='text-red-300 cursor-pointer'
-                    />
-
-                    <Link to={`edit/${id}`}>
-                      <AiFillEdit size={22} className='text-white cursor-pointer' />
-                    </Link>
-                  </div>
-                </td>
-              </tr>
+        {products?.length > 0 ? (
+          <tbody>
+            {products?.map((product: Product) => (
+              <TableBodyProducts key={product.id} handleDelete={handleDelete} product={product} />
             ))}
           </tbody>
-        ))}
+        ) : (
+          <>
+            {data?.pages.map((page: any) => (
+              <tbody key={page}>
+                {page.data?.map((product: Product) => (
+                  <TableBodyProducts
+                    key={product.id}
+                    handleDelete={handleDelete}
+                    product={product}
+                  />
+                ))}
+              </tbody>
+            ))}
+          </>
+        )}
       </table>
     </div>
   );

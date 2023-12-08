@@ -8,7 +8,7 @@ import useDebounce from "../hooks/useDeounce";
 const SearchResults = () => {
   const { searchTerm } = useSearchStore(state => state);
 
-  const debouncedSearchTerm = useDebounce(searchTerm, 4400);
+  const debouncedSearchTerm = useDebounce(searchTerm, 500);
 
   const { data } = useQuery({
     queryKey: ["products", debouncedSearchTerm],
