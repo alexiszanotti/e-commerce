@@ -9,6 +9,12 @@ class RegisterUserSerializer(serializers.ModelSerializer):
         fields = ["email", "name", "last_name", "password"]
 
 
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ["email", "name", "last_name", "id"]
+
+
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
     @classmethod
     def get_token(cls, user):

@@ -7,9 +7,16 @@ import { toast } from "react-hot-toast";
 import { Product } from "../Interfaces";
 import ProductCard from "../components/ProductCard";
 import Loader from "../components/Loader";
+import { useSearchStore } from "../store/search";
+import useDebounce from "../hooks/useDeounce";
+import SearchResults from "./SearchResultsPage";
 
 const HomePage = () => {
   const { ref, inView } = useInView();
+
+  const { searchTerm } = useSearchStore(state => state);
+
+  const searchTermiDebounce = useDebounce(searchTerm, 500);
 
   const { data, isLoading, error, isFetchingNextPage, fetchNextPage, hasNextPage } =
     useInfiniteQuery(["products"], getProductsApi, {
@@ -26,6 +33,8 @@ const HomePage = () => {
 
   if (isLoading) return <Loader />;
   if (error instanceof Error) return <>{toast.error(error.message)}</>;
+
+  if (searchTermiDebounce) return <SearchResults />;
 
   return (
     <>

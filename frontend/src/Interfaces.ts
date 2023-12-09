@@ -21,3 +21,12 @@ export interface Product {
   quantity?: number;
   num_reviews?: number;
 }
+
+export interface User {
+  id: number;
+  email: string;
+  name: string;
+  last_name: string;
+  avatar: File | null;
+  is_staff: boolean;
+}

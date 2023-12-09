@@ -9,6 +9,7 @@ import { SearchIcon } from "../components/icons";
 import { useQuery } from "@tanstack/react-query";
 import useDebounce from "../hooks/useDeounce";
 import { searchProductApi } from "../api/products";
+import { getUserByEmail } from "../api/users";
 
 const AdminPage = () => {
   const [show, setShow] = useState(0);
@@ -22,6 +23,16 @@ const AdminPage = () => {
     queryFn: () => {
       if (debouncedSearchTerm.length) {
         return searchProductApi(debouncedSearchTerm);
+      }
+      return [];
+    },
+  });
+
+  const { data: users } = useQuery({
+    queryKey: ["users", debouncedSearchTerm],
+    queryFn: () => {
+      if (show === 2 && debouncedSearchTerm.length) {
+        return getUserByEmail(debouncedSearchTerm);
       }
       return [];
     },
@@ -87,11 +98,12 @@ const AdminPage = () => {
           </div>
           {show === 0 && search && isFetched && data?.length ? (
             <Products products={data} />
-          ) : (
+          ) : show === 0 ? (
             <Products products={[]} />
-          )}
+          ) : null}
+
           {show === 1 && <Orders />}
-          {show === 2 && <Users />}
+          {show === 2 && <Users users={users} />}
         </div>
       </div>
     </section>

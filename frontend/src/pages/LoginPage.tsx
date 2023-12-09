@@ -102,7 +102,7 @@ const LoginPage = () => {
                 to={"/register"}
                 className='font-medium text-primary-600 hover:underline dark:text-primary-500'
               >
-                Register
+                Sign up
               </Link>
             </p>
           </form>
