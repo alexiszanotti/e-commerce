@@ -7,9 +7,10 @@ import AdminPage from "./pages/AdminPage";
 import AddProductPage from "./pages/AddProductPage";
 import EditProductPage from "./pages/EditProductPage";
 import DetailProductPage from "./pages/DetailProductPage";
-import { PrivateRoutes, AdminPrivateRoutes } from "./components/PrivateRoutes";
 import CategoryPage from "./pages/CategoryPage";
 import SearchByCategoryPage from "./pages/SearchByCategoryPage";
+import CartPage from "./pages/CartPage";
+import { PrivateRoutes, AdminPrivateRoutes } from "./components/PrivateRoutes";
 
 function App() {
   return (
@@ -23,7 +24,9 @@ function App() {
           <Route path='categories' element={<CategoryPage />} />
           <Route path='category/:category' element={<SearchByCategoryPage />} />
 
-          <Route element={<PrivateRoutes />}></Route>
+          <Route element={<PrivateRoutes />}>
+            <Route path='cart' element={<CartPage />} />
+          </Route>
           <Route path='admin' element={<AdminPrivateRoutes />}>
             <Route index element={<AdminPage />} />
             <Route path='new' element={<AddProductPage />} />

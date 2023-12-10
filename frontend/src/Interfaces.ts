@@ -30,3 +30,11 @@ export interface User {
   avatar: File | null;
   is_staff: boolean;
 }
+
+export interface Order {
+  total_price: number;
+  address: string;
+  city: string;
+  postal_code: string;
+  order_items: Product[];
+}

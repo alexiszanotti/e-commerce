@@ -16,27 +16,25 @@ const ProductCard = ({ product }: Props) => {
       <div className='max-w-sm bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700'>
         <Link to={`/product/${product.slug}`}>
           <img
-            className='rounded-t-lg'
+            className='rounded-t-lg h-72 w-full object-cover'
             src={`${import.meta.env.VITE_BACKEND_URL}${product.image}`}
             alt={product.name}
           />
         </Link>
         <div className='p-5 '>
-          <Link to={`/product/${product.name}`}>
-            <h5 className='mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>
-              {product.name}
+          <h5 className='mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>
+            {product.name}
+          </h5>
+          <div className='flex justify-between'>
+            <h5 className='mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-slate-200'>
+              € {product.price}
             </h5>
-            <div className='flex justify-between'>
-              <h5 className='mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-slate-200'>
-                $ {product.price}
-              </h5>
-              <div className='flex items-center'>
-                <span className='ml-1 text-gray-500 dark:text-gray-400'>
-                  {product.rating === null && <Rating value={product.rating} />}
-                </span>
-              </div>
+            <div className='flex items-center'>
+              <span className='ml-1 text-gray-500 dark:text-gray-400'>
+                {product.rating === null && <Rating value={product.rating} />}
+              </span>
             </div>
-          </Link>
+          </div>
           <p className='mb-3 font-normal text-gray-700 dark:text-gray-400'>{product.description}</p>
 
           <button

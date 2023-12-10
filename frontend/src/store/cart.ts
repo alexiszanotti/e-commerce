@@ -10,6 +10,7 @@ interface State {
 interface Actions {
   addToCart: (item: Product) => void;
   removeFromCart: (item: Product) => void;
+  removeAll: () => void;
 }
 
 export const useCartStore = create(
@@ -17,6 +18,10 @@ export const useCartStore = create(
     (set, get) => ({
       cart: [],
       totalPrice: 0,
+
+      removeAll: () => {
+        set({ cart: [], totalPrice: 0 });
+      },
 
       addToCart: (product: Product) => {
         const cart = get().cart;
