@@ -12,7 +12,7 @@ class RegisterUserSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ["email", "name", "last_name", "id"]
+        fields = ["email", "name", "last_name", "id", "avatar"]
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):

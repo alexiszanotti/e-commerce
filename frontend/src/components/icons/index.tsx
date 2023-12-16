@@ -38,7 +38,7 @@ export const UploadIcon = () => {
   return (
     <svg
       aria-hidden='true'
-      className='w-10 h-10 mb-3 text-gray-400'
+      className='w-10 h-10 my-3 text-gray-400'
       fill='none'
       stroke='currentColor'
       viewBox='0 0 24 24'

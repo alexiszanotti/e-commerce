@@ -1,3 +1,4 @@
+import { User } from "../Interfaces";
 import { authAxios, axi } from "./useAxios";
 
 export const registerApi = async (
@@ -47,6 +48,20 @@ export const getUserByEmail = async (query: string) => {
   try {
     const { data } = await authAxios.get(`/users/search/?query=${query}`);
     return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateUserApi = async ({ name, last_name, email, avatar }: User) => {
+  try {
+    const formData = new FormData();
+    formData.append("name", name);
+    formData.append("last_name", last_name);
+    formData.append("email", email);
+    if (avatar) formData.append("avatar", avatar);
+
+    await authAxios.put(`/users/edit/${email}`, formData);
   } catch (error) {
     console.log(error);
   }

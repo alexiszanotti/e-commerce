@@ -9,4 +9,5 @@ urlpatterns = [
     path('get/', views.get_user),
     path('delete/<int:pk>', views.delete_user),
     path('search/', views.get_user_by_email),
+    path('edit/<str:email>', views.edit_profile),
 ]

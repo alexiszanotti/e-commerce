@@ -20,6 +20,24 @@ def register(request):
     return Response(serializer.data)
 
 
+@api_view(['PUT'])
+def edit_profile(request, email):
+    try:
+        user = User.objects.get(email=email)
+    except User.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    if request.user == user:
+        serializer = UserSerializer(user, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    else:
+        return Response(status=status.HTTP_401_UNAUTHORIZED)
+
+
 @api_view(['GET'])
 def get_user(request):
     if request.user.is_staff:
