@@ -10,6 +10,7 @@ import { useQuery } from "@tanstack/react-query";
 import useDebounce from "../hooks/useDeounce";
 import { searchProductApi } from "../api/products";
 import { getUserByEmail } from "../api/users";
+import { searchOrderApi } from "../api/orders";
 
 const AdminPage = () => {
   const [show, setShow] = useState(0);
@@ -21,7 +22,7 @@ const AdminPage = () => {
   const { data, isFetched } = useQuery({
     queryKey: ["products", debouncedSearchTerm],
     queryFn: () => {
-      if (debouncedSearchTerm.length) {
+      if (show === 0 && debouncedSearchTerm.length) {
         return searchProductApi(debouncedSearchTerm);
       }
       return [];
@@ -33,6 +34,16 @@ const AdminPage = () => {
     queryFn: () => {
       if (show === 2 && debouncedSearchTerm.length) {
         return getUserByEmail(debouncedSearchTerm);
+      }
+      return [];
+    },
+  });
+
+  const { data: orders } = useQuery({
+    queryKey: ["orders", debouncedSearchTerm],
+    queryFn: () => {
+      if (show === 1 && debouncedSearchTerm.length) {
+        return searchOrderApi(debouncedSearchTerm);
       }
       return [];
     },
@@ -102,7 +113,7 @@ const AdminPage = () => {
             <Products products={[]} />
           ) : null}
 
-          {show === 1 && <Orders />}
+          {show === 1 && <Orders orders={orders} />}
           {show === 2 && <Users users={users} />}
         </div>
       </div>

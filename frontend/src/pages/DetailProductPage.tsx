@@ -5,6 +5,7 @@ import Loader from "../components/Loader";
 import toast from "react-hot-toast";
 import { PlusIcon } from "../components/icons";
 import { useCartStore } from "../store/cart";
+import Reviews from "../components/Reviews";
 
 const DetailProduct = () => {
   const { slug } = useParams();
@@ -44,6 +45,8 @@ const DetailProduct = () => {
           alt='office content 1'
         />
       </div>
+
+      <Reviews productId={0} reviews={[]} />
     </div>
   );
 };

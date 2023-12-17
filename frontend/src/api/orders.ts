@@ -43,3 +43,12 @@ export const updateOrderApi = async (id: number) => {
     console.log(error);
   }
 };
+
+export const searchOrderApi = async (query: string) => {
+  try {
+    const { data } = await authAxios.get(`/orders/search/?query=${query}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};

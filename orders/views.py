@@ -17,6 +17,17 @@ def get_orders(request):
     return Response(serializer.data)
 
 
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def searchOrder(request):
+    query = request.GET.get('query')
+    if not query:
+        query = ""
+    order = Order.objects.filter(user__email__icontains=query)
+    serializer = OrderSerializer(order, many=True)
+    return Response(serializer.data)
+
+
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def create_order(request):

@@ -6,7 +6,11 @@ import { Order } from "../Interfaces";
 import { Link } from "react-router-dom";
 import { formatCurrency } from "../helper";
 
-const Orders = () => {
+interface Props {
+  orders: any;
+}
+
+const Orders = ({ orders }: Props) => {
   const queryClient = useQueryClient();
 
   const { data, isError, isLoading } = useQuery({
@@ -66,45 +70,87 @@ const Orders = () => {
           </tr>
         </thead>
         <tbody>
-          {data &&
-            data.map(({ is_delivered, id, created_at, delivered_at, user, total_price }: Order) => (
-              <tr className='bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 '>
-                <td className='w-4 p-4'>
-                  <div className='flex items-center'>
-                    <input
-                      onClick={() => updateOrderMutatio.mutate(id)}
-                      id='checkbox-table-search-1'
-                      type='checkbox'
-                      checked={is_delivered}
-                      className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
-                    />
-                    <label htmlFor='checkbox-table-search-1' className='sr-only'>
-                      checkbox
-                    </label>
-                  </div>
-                </td>
-                <th
-                  scope='row'
-                  className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'
-                >
-                  {id}
-                </th>
-                <td className='px-6 py-4'>{created_at ? created_at.slice(0, 10) : "-"}</td>
-                <td className='px-6 py-4'>{delivered_at ? delivered_at.slice(0, 10) : "-"}</td>
-                <td className='px-6 py-4'>{user.toString()}</td>
+          {orders?.length
+            ? orders.map(
+                ({ is_delivered, id, created_at, delivered_at, user, total_price }: Order) => (
+                  <tr className='bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 '>
+                    <td className='w-4 p-4'>
+                      <div className='flex items-center'>
+                        <input
+                          onChange={() => updateOrderMutatio.mutate(id)}
+                          id='checkbox-table-search-1'
+                          type='checkbox'
+                          checked={is_delivered}
+                          className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
+                        />
+                        <label htmlFor='checkbox-table-search-1' className='sr-only'>
+                          checkbox
+                        </label>
+                      </div>
+                    </td>
+                    <th
+                      scope='row'
+                      className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'
+                    >
+                      {id}
+                    </th>
+                    <td className='px-6 py-4'>{created_at ? created_at.slice(0, 10) : "-"}</td>
+                    <td className='px-6 py-4'>{delivered_at ? delivered_at.slice(0, 10) : "-"}</td>
+                    <td className='px-6 py-4'>{user.toString()}</td>
 
-                <td className='px-6 py-4'> {formatCurrency(+total_price)}</td>
+                    <td className='px-6 py-4'> {formatCurrency(+total_price)}</td>
 
-                <td className='text-center'>
-                  <Link
-                    className=' p-3 rounded-lg bg-gray-900 cursor-pointer hover:bg-gray-700'
-                    to={`/order/${id}`}
-                  >
-                    Detail
-                  </Link>
-                </td>
-              </tr>
-            ))}
+                    <td className='text-center'>
+                      <Link
+                        className=' p-3 rounded-lg bg-gray-900 cursor-pointer hover:bg-gray-700'
+                        to={`/order/${id}`}
+                      >
+                        Detail
+                      </Link>
+                    </td>
+                  </tr>
+                )
+              )
+            : data.map(
+                ({ is_delivered, id, created_at, delivered_at, user, total_price }: Order) => (
+                  <tr className='bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 '>
+                    <td className='w-4 p-4'>
+                      <div className='flex items-center'>
+                        <input
+                          onChange={() => updateOrderMutatio.mutate(id)}
+                          id='checkbox-table-search-1'
+                          type='checkbox'
+                          checked={is_delivered}
+                          className='w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 dark:focus:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600'
+                        />
+                        <label htmlFor='checkbox-table-search-1' className='sr-only'>
+                          checkbox
+                        </label>
+                      </div>
+                    </td>
+                    <th
+                      scope='row'
+                      className='px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white'
+                    >
+                      {id}
+                    </th>
+                    <td className='px-6 py-4'>{created_at ? created_at.slice(0, 10) : "-"}</td>
+                    <td className='px-6 py-4'>{delivered_at ? delivered_at.slice(0, 10) : "-"}</td>
+                    <td className='px-6 py-4'>{user.toString()}</td>
+
+                    <td className='px-6 py-4'> {formatCurrency(+total_price)}</td>
+
+                    <td className='text-center'>
+                      <Link
+                        className=' p-3 rounded-lg bg-gray-900 cursor-pointer hover:bg-gray-700'
+                        to={`/order/${id}`}
+                      >
+                        Detail
+                      </Link>
+                    </td>
+                  </tr>
+                )
+              )}
         </tbody>
       </table>
     </div>
