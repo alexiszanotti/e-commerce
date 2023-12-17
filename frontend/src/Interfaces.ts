@@ -39,4 +39,7 @@ export interface Order {
   postal_code: string;
   order_items: Product[];
   is_delivered: boolean;
+  created_at: string;
+  delivered_at: string;
+  user: User;
 }

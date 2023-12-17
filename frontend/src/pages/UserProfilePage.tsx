@@ -6,9 +6,8 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { getUserById, updateUserApi } from "../api/users";
 import toast from "react-hot-toast";
 import { CloseIcon, UploadIcon } from "../components/icons";
-import { myOrdersApi } from "../api/orders";
 import Loader from "../components/Loader";
-import Orders from "../components/Orders";
+import MyOrders from "../components/MyOrders";
 
 const UserProfilePage = () => {
   const token: string = useAuthStore.getState().access;
@@ -48,11 +47,6 @@ const UserProfilePage = () => {
   } = useQuery({
     queryKey: ["users", user_id],
     queryFn: () => getUserById(user_id),
-  });
-
-  const { data, isError, isLoading } = useQuery({
-    queryFn: myOrdersApi,
-    queryKey: ["orders"],
   });
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
@@ -105,8 +99,7 @@ const UserProfilePage = () => {
     }
   }, [userData]);
 
-  if (isLoading || userIsLoading) return <Loader />;
-  if (isError) return <div>{toast.error("Error get orders")}</div>;
+  if (userIsLoading) return <Loader />;
   if (userError) return <div>{toast.error("Error get user")}</div>;
 
   return (
@@ -135,7 +128,7 @@ const UserProfilePage = () => {
                 </button>
               </div>
             </div>
-            <Orders orders={data} />
+            <MyOrders />
           </>
         ) : (
           <form onSubmit={handleSubmit}>
