@@ -53,6 +53,10 @@ const CartPage = () => {
       postal_code: postalCode,
       total_price: totalPrice,
       order_items: cart,
+      id: 0,
+      is_delivered: false,
+      created_at: new Date().toISOString(),
+      delivered_at: "",
     });
   };
 

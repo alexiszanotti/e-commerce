@@ -41,5 +41,4 @@ export interface Order {
   is_delivered: boolean;
   created_at: string;
   delivered_at: string;
-  user: User;
 }
