@@ -12,6 +12,7 @@ import SearchByCategoryPage from "./pages/SearchByCategoryPage";
 import UserProfilePage from "./pages/UserProfilePage";
 import CartPage from "./pages/CartPage";
 import { PrivateRoutes, AdminPrivateRoutes } from "./components/PrivateRoutes";
+import OrderDetailPage from "./pages/OrderDetailPage";
 
 function App() {
   return (
@@ -28,6 +29,7 @@ function App() {
           <Route element={<PrivateRoutes />}>
             <Route path='cart' element={<CartPage />} />
             <Route path='profile' element={<UserProfilePage />} />
+            <Route path='order/:id' element={<OrderDetailPage />} />
           </Route>
           <Route path='admin' element={<AdminPrivateRoutes />}>
             <Route index element={<AdminPage />} />

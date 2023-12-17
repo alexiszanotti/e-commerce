@@ -53,6 +53,15 @@ export const getUserByEmail = async (query: string) => {
   }
 };
 
+export const getUserById = async (id: number) => {
+  try {
+    const { data } = await authAxios.get(`/users/detail/${id}`);
+    return data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const updateUserApi = async ({ name, last_name, email, avatar }: User) => {
   try {
     const formData = new FormData();

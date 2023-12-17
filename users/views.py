@@ -1,7 +1,8 @@
 from rest_framework_simplejwt.views import TokenObtainPairView
 from django.contrib.auth.hashers import make_password
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
 from . models import User
 from . serializers import RegisterUserSerializer, MyTokenObtainPairSerializer, UserSerializer
@@ -39,7 +40,7 @@ def edit_profile(request, email):
 
 
 @api_view(['GET'])
-def get_user(request):
+def get_users(request):
     if request.user.is_staff:
         user = User.objects.exclude(email='admin@admin.com')
         serializer = UserSerializer(user, many=True)
@@ -63,6 +64,14 @@ def get_user_by_email(request):
         query = ''
     user = User.objects.filter(email__icontains=query)
     serializer = UserSerializer(user, many=True)
+    return Response(serializer.data)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_user_by_id(request, pk):
+    user = User.objects.get(id=pk)
+    serializer = UserSerializer(user)
     return Response(serializer.data)
 
 

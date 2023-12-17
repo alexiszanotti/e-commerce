@@ -1,33 +1,29 @@
-import { ChangeEvent, DragEvent, FormEvent, useRef, useState } from "react";
+import { ChangeEvent, DragEvent, FormEvent, useEffect, useRef, useState } from "react";
 import jwtDecode from "jwt-decode";
 import { Token } from "../Interfaces";
 import { useAuthStore } from "../store/auth";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { updateUserApi } from "../api/users";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { getUserById, updateUserApi } from "../api/users";
 import toast from "react-hot-toast";
 import { CloseIcon, UploadIcon } from "../components/icons";
+import { myOrdersApi } from "../api/orders";
+import Loader from "../components/Loader";
+import Orders from "../components/Orders";
 
 const UserProfilePage = () => {
   const token: string = useAuthStore.getState().access;
 
-  const {
-    avatar: avatarUser,
-    email,
-    name: nameUser,
-    user_id,
-    is_staff,
-    last_name: lastNameUser,
-  }: Token = jwtDecode(token);
+  const { user_id }: Token = jwtDecode(token);
 
   const [showEditProfile, setShowEditProfile] = useState(false);
-  const [image, setImage] = useState<File | null>(avatarUser);
+  const [image, setImage] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
   const [isHovered, setIsHovered] = useState(false);
   const [formData, setFormData] = useState({
-    name: nameUser || "",
-    last_name: lastNameUser || "",
-    avatar: avatarUser || "",
+    name: "",
+    last_name: "",
+    avatar: "",
   });
 
   const queryClient = useQueryClient();
@@ -45,6 +41,20 @@ const UserProfilePage = () => {
     },
   });
 
+  const {
+    data: userData,
+    isError: userError,
+    isLoading: userIsLoading,
+  } = useQuery({
+    queryKey: ["users", user_id],
+    queryFn: () => getUserById(user_id),
+  });
+
+  const { data, isError, isLoading } = useQuery({
+    queryFn: myOrdersApi,
+    queryKey: ["orders"],
+  });
+
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     editProfileMutation.mutate({
@@ -52,8 +62,8 @@ const UserProfilePage = () => {
       last_name: formData.last_name,
       avatar: image,
       id: user_id,
-      email,
-      is_staff,
+      email: userData.email,
+      is_staff: userData.is_staff,
     });
   };
 
@@ -84,27 +94,49 @@ const UserProfilePage = () => {
     setIsHovered(false);
   };
 
+  useEffect(() => {
+    if (userData) {
+      setFormData({
+        ...formData,
+        name: userData.name,
+        last_name: userData.last_name,
+        avatar: userData.avatar,
+      });
+    }
+  }, [userData]);
+
+  if (isLoading || userIsLoading) return <Loader />;
+  if (isError) return <div>{toast.error("Error get orders")}</div>;
+  if (userError) return <div>{toast.error("Error get user")}</div>;
+
   return (
     <section className='flex justify-center'>
-      <div className='p-4 mt-8 w-96 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700'>
+      <div
+        className={`${
+          showEditProfile ? "p-4" : "py-4"
+        } mt-8 min-w-96 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700`}
+      >
         {!showEditProfile ? (
-          <div className='flex flex-col items-center pb-3'>
-            <img
-              className='w-24 h-24 mb-3 rounded-full shadow-lg'
-              src={`${import.meta.env.VITE_BACKEND_URL}${avatarUser}`}
-              alt={nameUser}
-            />
-            <h5 className='mb-1 text-xl font-medium text-gray-900 dark:text-white'>{`${nameUser} ${lastNameUser}`}</h5>
-            <span className='text-sm text-gray-500 dark:text-gray-400'>{email}</span>
-            <div className='flex mt-4 md:mt-6'>
-              <button
-                onClick={() => setShowEditProfile(true)}
-                className='inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
-              >
-                Edit Profile
-              </button>
+          <>
+            <div className='flex flex-col items-center pb-3'>
+              <img
+                className='w-24 h-24 mb-3 rounded-full shadow-lg'
+                src={`${import.meta.env.VITE_BACKEND_URL}${userData.avatar}`}
+                alt={userData.name}
+              />
+              <h5 className='mb-1 text-xl font-medium text-gray-900 dark:text-white'>{`${userData.name} ${userData.last_name}`}</h5>
+              <span className='text-sm text-gray-500 dark:text-gray-400'>{userData.email}</span>
+              <div className='flex mt-4 md:mt-6'>
+                <button
+                  onClick={() => setShowEditProfile(true)}
+                  className='inline-flex items-center px-4 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+                >
+                  Edit Profile
+                </button>
+              </div>
             </div>
-          </div>
+            <Orders orders={data} />
+          </>
         ) : (
           <form onSubmit={handleSubmit}>
             <label

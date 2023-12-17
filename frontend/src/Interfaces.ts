@@ -32,9 +32,11 @@ export interface User {
 }
 
 export interface Order {
+  id: number;
   total_price: number;
   address: string;
   city: string;
   postal_code: string;
   order_items: Product[];
+  is_delivered: boolean;
 }

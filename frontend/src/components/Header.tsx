@@ -14,6 +14,10 @@ import { useCartStore } from "../store/cart";
 import { useSearchStore } from "../store/search";
 import { SearchIcon } from "./icons";
 import { Token } from "../Interfaces";
+import { useQuery } from "@tanstack/react-query";
+import { getUserById } from "../api/users";
+import Loader from "./Loader";
+import toast from "react-hot-toast";
 
 const Header = () => {
   const { toggleDarkMode, darkMode } = useDarkMode();
@@ -32,12 +36,12 @@ const Header = () => {
   };
 
   let is_admin: boolean;
-  let avatar: File | null;
+  let userId: number;
 
   if (isAuth) {
     const tokenDecoded: Token = jwt_decode(token);
     is_admin = tokenDecoded.is_staff;
-    avatar = tokenDecoded.avatar;
+    userId = tokenDecoded.user_id;
   }
 
   function logOutFun() {
@@ -48,6 +52,18 @@ const Header = () => {
   function classNames(...classes: any) {
     return classes.filter(Boolean).join(" ");
   }
+
+  const {
+    data: userData,
+    isError: userError,
+    isLoading: userIsLoading,
+  } = useQuery({
+    queryKey: ["users"],
+    queryFn: () => getUserById(userId),
+  });
+
+  if (userIsLoading) return <Loader />;
+  if (userError) return toast.error("Error to get user info");
 
   return (
     <Disclosure as='nav' className='bg-grey dark:bg-gray-800'>
@@ -161,7 +177,7 @@ const Header = () => {
                         <span className='sr-only'>Open user menu</span>
                         <img
                           className='h-8 w-8 rounded-full'
-                          src={`${import.meta.env.VITE_BACKEND_URL}${avatar}`}
+                          src={`${import.meta.env.VITE_BACKEND_URL}${userData.avatar}`}
                           alt='Not image'
                         />
                       </Menu.Button>
