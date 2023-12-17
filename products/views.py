@@ -1,11 +1,25 @@
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import IsAuthenticated
 from rest_framework import status
+
 from django.utils.text import slugify
+from backend.pagination import CustomPagination
 
 from . models import Product
-from . serializers import ProductSerializer
-from backend.pagination import CustomPagination
+from . serializers import ProductSerializer, ReviewsSerializer
+
+
+@api_view(['POST'])
+@permission_classes([IsAuthenticated])
+def create_review(request, pk):
+    serializer = ReviewsSerializer(data=request.data)
+    product = Product.objects.get(pk=pk)
+    if serializer.is_valid():
+        serializer.save(user=request.user, product=product)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    else:
+        return Response(serializer.data, status=status.HTTP_400_BAD_REQUEST)
 
 
 @api_view(['GET'])
@@ -79,7 +93,7 @@ def delete_product(request, pk):
 
 
 @api_view(['GET'])
-def searchProduct(request):
+def search_product(request):
     query = request.GET.get('query')
     if not query:
         query = ""

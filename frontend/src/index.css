@@ -7,3 +7,11 @@ body {
   padding: 0;
   margin: 0;
 }
+
+.on {
+  color: #ffc107;
+}
+
+.off {
+  color: #ccc;
+}

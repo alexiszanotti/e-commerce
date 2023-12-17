@@ -36,8 +36,6 @@ const Users = (user: Prop) => {
   if (isLoading || deleteUserMutation.isLoading) return <Loader />;
   if (isError) return toast.error("Error!");
 
-  console.log(user);
-
   return (
     <div className='overflow-x-auto'>
       <table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>

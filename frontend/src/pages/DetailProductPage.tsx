@@ -3,9 +3,10 @@ import { getProductBySlugApi } from "../api/products";
 import { useParams } from "react-router-dom";
 import Loader from "../components/Loader";
 import toast from "react-hot-toast";
-import { PlusIcon } from "../components/icons";
+import { MdOutlineAddShoppingCart } from "react-icons/md";
 import { useCartStore } from "../store/cart";
 import Reviews from "../components/Reviews";
+import { formatCurrency } from "../helper";
 
 const DetailProduct = () => {
   const { slug } = useParams();
@@ -27,15 +28,14 @@ const DetailProduct = () => {
           <h2 className='mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white'>
             {data.name}
           </h2>
-          <p className='mb-1 font-bold'>${data.price}</p>
+          <p className='mb-1 font-bold'>{formatCurrency(+data.price)}</p>
           <p className='mb-4 font-bold'>{data.description}</p>
           <button
             onClick={() => addToCart(data)}
             type='button'
             className='inline-flex items-center px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
           >
-            Add to Cart
-            <PlusIcon />
+            <MdOutlineAddShoppingCart className='w-6 h-6' />
           </button>
         </div>
 
@@ -46,7 +46,7 @@ const DetailProduct = () => {
         />
       </div>
 
-      <Reviews productId={0} reviews={[]} />
+      <Reviews productId={data.id} reviews={data.reviews} />
     </div>
   );
 };

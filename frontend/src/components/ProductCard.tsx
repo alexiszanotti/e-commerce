@@ -1,8 +1,8 @@
 import { Link } from "react-router-dom";
 import { Product } from "../Interfaces";
-import { ArrowRightIcon } from "./icons";
 import { useCartStore } from "../store/cart";
 import Rating from "./Rating";
+import { MdOutlineAddShoppingCart } from "react-icons/md";
 
 interface Props {
   product: Product;
@@ -37,25 +37,25 @@ const ProductCard = ({ product }: Props) => {
           </div>
           <p className='mb-3 font-normal text-gray-700 dark:text-gray-400'>{product.description}</p>
 
-          <button
-            onClick={() => addToCart(product)}
-            className='inline-flex items-center mx-3 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
-          >
-            Add to Cart
-            <ArrowRightIcon />
-          </button>
+          <div className='flex flex-row'>
+            <button
+              onClick={() => addToCart(product)}
+              className=' flex justify-center items-center w-1/2  mx-3 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
+            >
+              <MdOutlineAddShoppingCart className='w-6 h-6' />
+            </button>
 
-          <Link
-            to={`/product/${product.slug}`}
-            className='inline-flex items-center mx-3
-        px-3 py-2 text-sm font-medium text-center text-white 
+            <Link
+              to={`/product/${product.slug}`}
+              className='w-1/2  mx-3 
+         py-2 text-sm font-medium text-center text-white 
         bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 
         focus:outline-none focus:ring-blue-300 dark:bg-blue-600 
         dark:hover:bg-blue-700 dark:focus:ring-blue-800'
-          >
-            View
-            <ArrowRightIcon />
-          </Link>
+            >
+              Detail
+            </Link>
+          </div>
         </div>
       </div>
     </div>
