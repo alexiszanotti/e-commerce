@@ -83,7 +83,7 @@ const OrderDetailPage = () => {
         </thead>
         <tbody>
           {data.order_items.map(({ product, price, quantity }: any) => (
-            <tr className='border-b dark:border-gray-700'>
+            <tr key={crypto.randomUUID()} className='border-b dark:border-gray-700'>
               <th
                 scope='row'
                 className='px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white'

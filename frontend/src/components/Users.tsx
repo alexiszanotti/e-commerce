@@ -7,7 +7,7 @@ import { User } from "../Interfaces";
 import { useNavigate } from "react-router-dom";
 
 interface Prop {
-  users: any;
+  users: [];
 }
 
 const Users = (user: Prop) => {
@@ -16,8 +16,10 @@ const Users = (user: Prop) => {
 
   const { data, isError, isLoading } = useQuery({
     queryKey: ["users"],
-    queryFn: () => getUsersApi(),
+    queryFn: getUsersApi,
   });
+
+  console.log(data);
 
   const deleteUserMutation = useMutation({
     mutationFn: deleteUserApi,
