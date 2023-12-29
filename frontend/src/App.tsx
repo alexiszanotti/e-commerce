@@ -13,14 +13,16 @@ import UserProfilePage from "./pages/UserProfilePage";
 import CartPage from "./pages/CartPage";
 import { PrivateRoutes, AdminPrivateRoutes } from "./components/PrivateRoutes";
 import OrderDetailPage from "./pages/OrderDetailPage";
+import { Toaster } from "react-hot-toast";
 
 function App() {
   return (
     <BrowserRouter>
+      <Toaster />
       <Routes>
+        <Route path='login' element={<LoginPage />} />
         <Route path='/' element={<Layout />}>
           <Route index element={<HomePage />} />
-          <Route path='login' element={<LoginPage />} />
           <Route path='register' element={<RegisterPage />} />
           <Route path='product/:slug' element={<DetailProductPage />} />
           <Route path='categories' element={<CategoryPage />} />

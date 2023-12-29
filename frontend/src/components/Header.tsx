@@ -22,7 +22,7 @@ import toast from "react-hot-toast";
 const Header = () => {
   const { toggleDarkMode, darkMode } = useDarkMode();
 
-  const { isAuth } = useAuthStore();
+  const { isAuth, logout } = useAuthStore();
   const cart = useCartStore(({ cart }) => cart);
 
   const { searchTerm, setSearchTerm } = useSearchStore(state => state);
@@ -45,7 +45,7 @@ const Header = () => {
   }
 
   function logOutFun() {
-    useAuthStore.getState().logout();
+    logout();
     navigate("/login");
   }
 
@@ -92,14 +92,14 @@ const Header = () => {
                       <>
                         <Link
                           to={"/"}
-                          className='bg-slate-400 p-2 px-4 rounded-lg text-black dark:bg-gray-900 dark:text-white'
+                          className='bg-slate-200 p-2 px-4 rounded-lg text-black dark:bg-gray-900 dark:text-white'
                         >
                           Home
                         </Link>
 
                         <Link
                           to={"categories"}
-                          className='text-black p-2 px-4 rounded-lg hover:bg-slate-400 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white'
+                          className='text-black p-2 px-4 rounded-lg hover:bg-slate-200 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white'
                         >
                           Categories
                         </Link>
@@ -115,7 +115,7 @@ const Header = () => {
 
                         <Link
                           to={"/register"}
-                          className='text-black p-2 px-4 rounded-lg hover:bg-slate-400 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white'
+                          className='text-black p-2 px-4 rounded-lg hover:bg-slate-200 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white'
                         >
                           Sign up
                         </Link>
@@ -125,7 +125,7 @@ const Header = () => {
                     {is_admin && (
                       <Link
                         to={"/admin"}
-                        className='text-black p-2 px-4 rounded-lg hover:bg-slate-400 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white'
+                        className='text-black p-2 px-4 rounded-lg hover:bg-slate-200 dark:text-gray-300 dark:hover:bg-gray-700 dark:hover:text-white'
                       >
                         Admin Panel
                       </Link>
@@ -144,7 +144,7 @@ const Header = () => {
                   id='search-navbar'
                   className='block w-full md:w-[200px] lg:w-[400px] xl:w-[600px] p-2
                   pl-10 text-sm text-gray-900 border border-gray-300 rounded-full 
-                  bg-gray-50 dark:bg-gray-700 outline-none
+                  bg-slate-200 dark:bg-gray-700 outline-none
                   dark:border-gray-600 dark:placeholder-gray-400 dark:text-white 
                   '
                   placeholder='Search product...'
@@ -191,7 +191,7 @@ const Header = () => {
                       leaveFrom='transform opacity-100 scale-100'
                       leaveTo='transform opacity-0 scale-95'
                     >
-                      <Menu.Items className='absolute right-0 z-10 mt-2 w-48 origin-top-right bg-white dark:bg-slate-950 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
+                      <Menu.Items className='absolute right-0 z-10 mt-2 w-48 origin-top-right bg-slate-200 dark:bg-slate-950 py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none'>
                         <Menu.Item>
                           {({ active }) => (
                             <Link
@@ -237,7 +237,7 @@ const Header = () => {
                 id='search-navbar'
                 className='block w-full p-2
                 pl-10 text-sm text-gray-900 border border-gray-300 rounded-full 
-                bg-gray-50 dark:bg-gray-700 outline-none
+                bg-slate-200 dark:bg-gray-700 outline-none
                 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white  
                 '
                 placeholder='Search...'

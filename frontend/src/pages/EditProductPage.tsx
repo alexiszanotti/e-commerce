@@ -116,7 +116,7 @@ const EditProductPage = () => {
   if (editProdMutation.isLoading) return <Loader />;
   return (
     <div className='fixed top-0 left-0 w-full h-full bg-black bg-opacity-60 '>
-      <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 h-[700px] w-[600px] rounded-md'>
+      <div className='absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 max-h-screen w-[600px] rounded-md'>
         <div className='relative p-4 w-full max-w-2xl h-full md:h-auto'>
           <div className='relative p-4 bg-white rounded-lg shadow dark:bg-gray-800 sm:p-5'>
             <div className='flex justify-between items-center pb-4 mb-4 rounded-t border-b sm:mb-5 dark:border-gray-600'>
@@ -224,7 +224,7 @@ const EditProductPage = () => {
                     {image === null ? (
                       <label
                         htmlFor='dropzone-file'
-                        className={`flex flex-col items-center justify-center w-full h-64 
+                        className={`flex flex-col items-center justify-center w-full  
         border-2 border-gray-600 border-dashed rounded-lg 
         cursor-pointer bg-gray-40 ${isHovered ? "bg-gray-600" : "hover:bg-gray-600"}`}
                         onDragEnter={handleDragEnter}
@@ -259,7 +259,7 @@ const EditProductPage = () => {
                           <CloseIcon />
                         </button>
                         <img
-                          className='h-48 w-96'
+                          className='object-cover max-h-20  '
                           src={filePreview || `${import.meta.env.VITE_BACKEND_URL}${data.image}`}
                           alt={data.name}
                         />

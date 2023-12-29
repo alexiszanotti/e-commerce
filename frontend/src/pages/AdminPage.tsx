@@ -50,7 +50,7 @@ const AdminPage = () => {
   });
 
   return (
-    <section className='bg-gray-50 dark:bg-gray-900 p-3 sm:p-5'>
+    <section className='bg-gray-200 dark:bg-gray-900 p-3 sm:p-5'>
       <div className='mx-auto max-w-screen-lg px-4 lg:px-12'>
         <div className='bg-white dark:bg-gray-800 relative shadow-md sm:rounded-lg overflow-hidden'>
           <div className='flex flex-col md:flex-row items-center justify-between space-y-3 md:space-y-0 md:space-x-4 p-4'>
@@ -74,11 +74,16 @@ const AdminPage = () => {
                 </div>
                 {show === 0 && (
                   <Link
-                    className='flex text-sm px-4 py-2 rounded-md  ml-4 w-64 items-center hover:bg-gray-700'
+                    className='flex text-sm px-4 py-2 rounded-md  ml-4 w-72 justify-center items-center hover:bg-gray-200 dark:hover:bg-gray-600 transition-all'
                     to='new'
                   >
-                    <AiFillPlusCircle size={24} className=' text-gray-400 cursor-pointer' />
-                    <span className='mx-3 text-gray-400 font-bold'>Add product</span>
+                    <AiFillPlusCircle
+                      size={24}
+                      className=' text-gray-700 dark:text-gray-400 cursor-pointer'
+                    />
+                    <span className='mx-3 text-gray-700 dark:text-gray-400 font-bold'>
+                      Add product
+                    </span>
                   </Link>
                 )}
               </form>

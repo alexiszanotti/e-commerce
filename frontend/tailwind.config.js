@@ -22,6 +22,9 @@ export default {
     minHeight: {
       "semi-full": "calc(100vh - 64px)",
     },
+    fontFamily: {
+      Montserrat: ["Montserrat"],
+    },
   },
   plugins: [],
 };

@@ -7,10 +7,10 @@ import { User } from "../Interfaces";
 import { useNavigate } from "react-router-dom";
 
 interface Prop {
-  users: [];
+  users: User[];
 }
 
-const Users = (user: Prop) => {
+const Users = ({ users }: Prop) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
@@ -18,8 +18,6 @@ const Users = (user: Prop) => {
     queryKey: ["users"],
     queryFn: getUsersApi,
   });
-
-  console.log(data);
 
   const deleteUserMutation = useMutation({
     mutationFn: deleteUserApi,
@@ -37,6 +35,8 @@ const Users = (user: Prop) => {
 
   if (isLoading || deleteUserMutation.isLoading) return <Loader />;
   if (isError) return toast.error("Error!");
+
+  console.log(data);
 
   return (
     <div className='overflow-x-auto'>
@@ -61,9 +61,9 @@ const Users = (user: Prop) => {
           </tr>
         </thead>
 
-        {user && user.users?.length ? (
+        {users?.length ? (
           <tbody>
-            {user.users?.map(({ id, name, last_name, email }: User) => (
+            {users?.map(({ id, name, last_name, email }: User) => (
               <tr className='border-b dark:border-gray-700'>
                 <th
                   scope='row'
@@ -86,26 +86,24 @@ const Users = (user: Prop) => {
           </tbody>
         ) : (
           <tbody>
-            {data?.map(({ id, name, last_name, email }: User) => (
-              <tr className='border-b dark:border-gray-700'>
-                <th
-                  scope='row'
-                  className='px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white'
-                >
-                  {id}
-                </th>
-                <td className='px-4 py-3'>{email}</td>
-                <td className='px-4 py-3'>{name}</td>
-                <td className='px-4 py-3'>{last_name}</td>
-                <td className='px-4 py-3 flex items-center justify-center gap-4'>
-                  <BsFillTrashFill
-                    onClick={() => deleteUserMutation.mutate(id)}
-                    size={22}
-                    className='text-red-300 cursor-pointer'
-                  />
-                </td>
-              </tr>
-            ))}
+            <tr className='border-b dark:border-gray-700'>
+              <th
+                scope='row'
+                className='px-4 py-3 font-medium text-gray-900 whitespace-nowrap dark:text-white'
+              >
+                {data.id}
+              </th>
+              <td className='px-4 py-3'>{data.email}</td>
+              <td className='px-4 py-3'>{data.name}</td>
+              <td className='px-4 py-3'>{data.last_name}</td>
+              <td className='px-4 py-3 flex items-center justify-center gap-4'>
+                <BsFillTrashFill
+                  onClick={() => deleteUserMutation.mutate(data.id)}
+                  size={22}
+                  className='text-red-300 cursor-pointer'
+                />
+              </td>
+            </tr>
           </tbody>
         )}
       </table>

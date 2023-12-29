@@ -18,7 +18,6 @@ const UserProfilePage = () => {
   const [image, setImage] = useState<File | null>(null);
   const [filePreview, setFilePreview] = useState<string>("");
   const inputRef = useRef<HTMLInputElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     last_name: "",
@@ -63,12 +62,10 @@ const UserProfilePage = () => {
 
   const handleDragEnter = (event: DragEvent<HTMLLabelElement>) => {
     event.preventDefault();
-    setIsHovered(true);
   };
 
   const handleDragLeave = (event: DragEvent<HTMLLabelElement>) => {
     event.preventDefault();
-    setIsHovered(false);
   };
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -85,7 +82,6 @@ const UserProfilePage = () => {
 
   const removeImage = () => {
     setImage(null);
-    setIsHovered(false);
   };
 
   useEffect(() => {
@@ -107,7 +103,7 @@ const UserProfilePage = () => {
       <div
         className={`${
           showEditProfile ? "p-4" : "py-4"
-        } mt-8 min-w-96 bg-white border border-gray-200 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700`}
+        } mt-8 min-w-[300px]  bg-white border border-gray-300 rounded-lg shadow dark:bg-gray-800 dark:border-gray-700`}
       >
         {!showEditProfile ? (
           <>
@@ -144,7 +140,7 @@ const UserProfilePage = () => {
               value={formData.name}
               onChange={({ target }) => setFormData({ ...formData, name: target.value })}
               id='name'
-              className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
+              className='bg-slate-200 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
               placeholder='John'
             />
             <label
@@ -159,14 +155,14 @@ const UserProfilePage = () => {
               value={formData.last_name}
               onChange={({ target }) => setFormData({ ...formData, last_name: target.value })}
               id='last_name'
-              className='bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
-              placeholder='Do'
+              className='bg-slate-200 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500'
             />
             {image === null ? (
               <label
                 htmlFor='dropzone-file'
-                className={`flex flex-col items-center justify-center mt-3 w-full  border-2 border-gray-600 border-dashed rounded-lg 
-            hover:cursor-pointer bg-gray-40 ${isHovered ? "bg-gray-600 " : "hover:bg-gray-600 "}`}
+                className={
+                  "flex flex-col items-center justify-center mt-3 w-full  border-2 border-gray-600 border-dashed rounded-lg hover:cursor-pointer bg-gray-200 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-700"
+                }
                 onDragEnter={handleDragEnter}
                 onDragLeave={handleDragLeave}
               >
@@ -213,6 +209,16 @@ const UserProfilePage = () => {
                 dark:hover:bg-blue-700 '
             >
               Save changes
+            </button>
+            <button
+              onClick={() => setShowEditProfile(false)}
+              className=' mt-3 w-full
+                 py-2 text-sm font-medium text-white bg-blue-700 rounded-lg
+                hover:bg-blue-800 
+                dark:bg-blue-600 
+                dark:hover:bg-blue-700 '
+            >
+              Cancel
             </button>
           </form>
         )}

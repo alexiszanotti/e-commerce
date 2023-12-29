@@ -8,9 +8,9 @@ import { useInView } from "react-intersection-observer";
 import { Product } from "../Interfaces";
 import TableBodyProducts from "./TableBodyProducts";
 
-type Props = {
-  products: any;
-};
+interface Props {
+  products: Product[];
+}
 
 const Products = ({ products }: Props) => {
   const queryClient = useQueryClient();
@@ -19,7 +19,6 @@ const Products = ({ products }: Props) => {
   const { inView } = useInView();
 
   const { data, isLoading, error, fetchNextPage } = useInfiniteQuery(["products"], getProductsApi, {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     getNextPageParam: (page: any) => page.meta.next,
   });
 
@@ -27,7 +26,6 @@ const Products = ({ products }: Props) => {
     if (inView) {
       fetchNextPage();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [inView]);
 
   const deleteProductMutation = useMutation({
@@ -55,7 +53,7 @@ const Products = ({ products }: Props) => {
   return (
     <div className='overflow-x-auto'>
       <table className='w-full text-sm text-left text-gray-500 dark:text-gray-400'>
-        <thead className='text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400'>
+        <thead className='text-xs text-gray-700 uppercase bg-slate-200 dark:bg-gray-700 dark:text-gray-400'>
           <tr>
             <th scope='col' className='px-4 py-3'>
               Id

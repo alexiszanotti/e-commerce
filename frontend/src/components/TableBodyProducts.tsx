@@ -1,11 +1,12 @@
 import { BsFillTrashFill } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { AiFillEdit } from "react-icons/ai";
+import { Product } from "../Interfaces";
 
-type Props = {
-  product: any;
+interface Props {
+  product: Product;
   handleDelete: (id: number) => void;
-};
+}
 
 const TableBodyProducts = ({ handleDelete, product }: Props) => {
   return (
@@ -21,11 +22,14 @@ const TableBodyProducts = ({ handleDelete, product }: Props) => {
               if (product.id) handleDelete(product.id);
             }}
             size={22}
-            className='text-red-300 cursor-pointer'
+            className='transition-all text-red-700 hover:text-red-900 dark:text-red-300 dark:hover:text-red-400 cursor-pointer'
           />
 
           <Link to={`edit/${product.id}`}>
-            <AiFillEdit size={22} className='text-white cursor-pointer' />
+            <AiFillEdit
+              size={24}
+              className='transition-all text-gray-600 hover:text-gray-800 dark:text-white dark:hover:text-gray-400 cursor-pointer'
+            />
           </Link>
         </div>
       </td>

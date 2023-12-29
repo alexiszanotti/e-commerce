@@ -1,36 +1,17 @@
 import Rating from "./Rating";
 import AddReview from "./AddReview";
-import { useState } from "react";
 
 interface Props {
   productId: number;
   reviews: [];
+  addReview: boolean;
+  setAddReview: (review: boolean) => void;
 }
 
-const Reviews = ({ productId, reviews }: Props) => {
-  const [show, setShow] = useState(false);
-
+const Reviews = ({ productId, addReview, setAddReview, reviews }: Props) => {
   return (
-    <>
-      {show && <AddReview productId={productId} setShow={setShow} />}
-      <section className='bg-white dark:bg-gray-900'>
-        <div className='py-8 px-4 mx-auto max-w-screen-xl text-center lg:py-16 lg:px-6'>
-          <div className='mx-auto max-w-screen-sm'>
-            <h2 className='mb-4 text-4xl tracking-tight font-extrabold text-gray-900 dark:text-white'>
-              Reviews of this product
-            </h2>
-            <p className='mb-8 font-light text-gray-500 lg:mb-16 sm:text-xl dark:text-gray-400'>
-              Explore the reivews of this product
-            </p>
-            <button
-              onClick={() => setShow(true)}
-              className='inline-flex items-center mx-3 px-3 py-2 text-sm font-medium text-center text-white bg-blue-700 rounded-lg hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800'
-            >
-              Create a review
-            </button>
-          </div>
-        </div>
-      </section>
+    <div className='flex-1'>
+      {addReview && <AddReview productId={productId} setShow={setAddReview} />}
 
       {reviews &&
         reviews.map((r: any) => (
@@ -42,19 +23,19 @@ const Reviews = ({ productId, reviews }: Props) => {
                 alt=''
               />
               <div className='space-y-1 font-medium dark:text-white'>
-                <p>{r.user}</p>
+                <p>{r.name || r.user}</p>
               </div>
             </div>
 
-            <Rating value={r.rating} />
-
-            <footer className='mb-5 text-sm text-gray-500 dark:text-gray-400'>
+            <footer className='mb-3 text-sm flex gap-x-3 items-center text-gray-500 dark:text-gray-400'>
               <p>{r.created_at.slice(0, 10)}</p>
+              <Rating value={r.rating} />
             </footer>
-            <p className='mb-2 text-gray-500 dark:text-gray-400'>{r.description}</p>
+            <p className='mb-2 text-gray-800  dark:text-gray-400'>{r.description}</p>
+            <div className=' my-2 bg-gray-400 h-px' />
           </article>
         ))}
-    </>
+    </div>
   );
 };
 export default Reviews;

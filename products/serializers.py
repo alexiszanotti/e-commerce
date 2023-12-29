@@ -5,6 +5,7 @@ from . models import Product, Reviews
 class ReviewsSerializer(serializers.ModelSerializer):
     avatar = serializers.SerializerMethodField(source='user.avatar.url')
     user = serializers.ReadOnlyField(source='user.email')
+    name = serializers.ReadOnlyField(source='user.name')
 
     class Meta:
         model = Reviews

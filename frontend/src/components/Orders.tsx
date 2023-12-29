@@ -110,8 +110,8 @@ const Orders = ({ orders }: Props) => {
               </tbody>
             ))
           : data.map(({ is_delivered, id, created_at, delivered_at, user, total_price }: any) => (
-              <tbody>
-                <tr className='bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 '>
+              <tbody key={id}>
+                <tr className='bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:bg-gray-50 dark:hover:bg-transparent'>
                   <td className='w-4 p-4'>
                     <div className='flex items-center'>
                       <input
