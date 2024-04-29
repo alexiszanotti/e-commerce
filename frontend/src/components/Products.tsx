@@ -14,20 +14,7 @@ const Products = ({ products }: Props) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-
-<<<<<<< HEAD
-  const { data, isLoading, error, fetchNextPage } = useInfiniteQuery(["products"], getProductsApi, {
-    getNextPageParam: (page: any) => page.meta.next,
-  });
-
-  useEffect(() => {
-    if (inView) {
-      fetchNextPage();
-    }
-  }, [inView]);
-=======
- const { data, isLoading, error } =  useQuery(["products"], getProductsApi);
->>>>>>> 7b161b2 (Refactor Products component in frontend/src/components/Products.tsx)
+  const { data, isLoading, error } = useQuery(["products"], getProductsApi);
 
   const deleteProductMutation = useMutation({
     mutationFn: deleteProductApi,
