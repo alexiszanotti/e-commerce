@@ -23,7 +23,7 @@ const Header = () => {
   const { toggleDarkMode, darkMode } = useDarkMode();
 
   const { isAuth, logout } = useAuthStore();
-  const cart = useCartStore(({ cart }) => cart);
+  const cart = useCartStore(store => store.cart);
 
   const { searchTerm, setSearchTerm } = useSearchStore(state => state);
 
