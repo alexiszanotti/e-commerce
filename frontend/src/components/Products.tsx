@@ -1,10 +1,8 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { deleteProductApi, getProductsApi } from "../api/products";
-import { useInfiniteQuery, useMutation, useQueryClient } from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 import Loader from "./Loader";
-import { useInView } from "react-intersection-observer";
 import { Product } from "../Interfaces";
 import TableBodyProducts from "./TableBodyProducts";
 
@@ -16,8 +14,8 @@ const Products = ({ products }: Props) => {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
 
-  const { inView } = useInView();
 
+<<<<<<< HEAD
   const { data, isLoading, error, fetchNextPage } = useInfiniteQuery(["products"], getProductsApi, {
     getNextPageParam: (page: any) => page.meta.next,
   });
@@ -27,6 +25,9 @@ const Products = ({ products }: Props) => {
       fetchNextPage();
     }
   }, [inView]);
+=======
+ const { data, isLoading, error } =  useQuery(["products"], getProductsApi);
+>>>>>>> 7b161b2 (Refactor Products component in frontend/src/components/Products.tsx)
 
   const deleteProductMutation = useMutation({
     mutationFn: deleteProductApi,
